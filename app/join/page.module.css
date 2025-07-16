@@ -1,0 +1,82 @@
+.header {
+	padding: 1rem;
+}
+
+.logo {
+	font-size: 2rem;
+	font-weight: 600;
+	text-align: center;
+	margin: 0;
+}
+
+.hero {
+	display: flex;
+	flex-direction: column;
+	padding: 1rem;
+}
+
+.textMain {
+	text-align: center;
+	font-size: 2rem;
+	font-weight: 600;
+}
+
+.highlight {
+	color: var(--accent-span);
+	font-weight: 600;
+}
+
+.inputFields {
+	display: flex;
+	flex-direction: column;
+	padding: 1rem;
+	gap: 1rem;
+}
+
+.inputSection {
+	margin: 0;
+	display: flex;
+	flex-direction: row;
+	gap: 2rem;
+	align-items: center;
+}
+
+.input {
+	margin: 0;
+	width: 20%;
+}
+
+.inputBox {
+	border: none;
+	width: 100%;
+	background-color: var(--accent);
+	color: var(--foreground);
+	font-size: 1rem;
+	padding: 0.25rem;
+}
+
+.inputBox:focus {
+	outline: none;
+	background-color: var(--accent-focus);
+}
+
+.btn {
+	margin-top: 1.5rem;
+	padding: 1rem;
+	width: 30%;
+	align-self: flex-end;
+	border: none;
+	background-color: var(--accent-focus);
+	color: var(--foreground);
+}
+
+.btnSection {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.code {
+	letter-spacing: calc(2.5rem);
+	font-weight: 600;
+}

@@ -25,44 +25,11 @@
 	color: var(--accent-span);
 	font-weight: 600;
 }
-
-.inputFields {
-	display: flex;
-	flex-direction: column;
+.btn {
 	padding: 1rem;
-	gap: 1rem;
-}
-
-.inputSection {
-	margin: 0;
-	display: flex;
-	flex-direction: row;
-	gap: 2rem;
-}
-
-.input {
-	margin: 0;
-	width: 20%;
-}
-
-.inputBox {
+	margin-top: 1rem;
 	border: none;
-	width: 100%;
 	background-color: var(--accent);
 	color: var(--foreground);
-}
-
-.inputBox:focus {
-	outline: none;
-	background-color: var(--accent-focus);
-}
-
-.join {
-	margin-top: 1.5rem;
-	padding: 1rem;
-	width: 30%;
-	align-self: flex-end;
-	border: none;
-	background-color: var(--accent-focus);
-	color: var(--foreground);
+	font-size: 1rem;
 }

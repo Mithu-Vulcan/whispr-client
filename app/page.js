@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
 import styles from "./page.module.css";
 import { Poppins } from "next/font/google";
-import { useRef } from "react";
+import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
 	variable: "--font-poppins",
@@ -11,18 +11,14 @@ const poppins = Poppins({
 });
 
 export default function Home() {
-	const nameRef = useRef();
-	const codeRef = useRef();
+	const router = useRouter();
 
+	function handleCreate() {
+		router.push('/create')
+	}
 	function handleJoin() {
-    const name = nameRef.current.value
-    const code = codeRef.current.value
-    if (!code || !name) {
-      alert("Empty input Fields Check the name and code")
-    } else {
-      console.log(`Joining: ${name} ${code}`)
-    }
-  }
+		router.push('/join')
+	}
 
 	return (
 		<section className={styles.home} id='home'>
@@ -36,17 +32,8 @@ export default function Home() {
 					<span className={styles.highlight}> name</span> and a
 					<span className={styles.highlight}> Room code</span>
 				</p>
-			</div>
-			<div className={styles.inputFields}>
-				<div className={styles.inputSection}>
-					<p className={styles.input}>Name: </p>
-					<input type='text' className={styles.inputBox} ref={nameRef} />
-				</div>
-				<div className={styles.inputSection}>
-					<p className={styles.input}>Code: </p>
-					<input type='text' className={styles.inputBox} ref={codeRef} />
-				</div>
-				<button className={styles.join} onClick={handleJoin}>Join</button>
+				<button className={styles.btn} onClick={handleJoin}>Join a Room</button>
+				<button className={styles.btn} onClick={handleCreate}>Create a Room</button>
 			</div>
 		</section>
 	);
