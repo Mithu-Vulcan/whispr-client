@@ -1,0 +1,38 @@
+/* FloatingDialog.module.css */
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1000;
+}
+
+.dialog {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--background);
+	padding: 20px;
+	border-radius: 8px;
+	z-index: 1001;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+	min-width: 300px;
+	text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.closeBtn {
+    align-self: flex-end;
+    color: var(--foreground);
+    background-color: transparent;
+    border-style: solid;
+    border-width: 1px;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.3rem;
+    border-color: var(--accent);
+}

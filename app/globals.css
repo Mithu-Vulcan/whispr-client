@@ -4,6 +4,13 @@
 	--accent: hsl(0, 0%, 30%);
 	--accent-focus: hsl(0, 0%, 40%);
 	--accent-span: hsl(176, 100%, 75%);
+
+	--name-color-1: hsl(5, 85%, 65%); /* coral-ish (red/orange) */
+	--name-color-2: hsl(134, 60%, 55%); /* fresh green */
+	--name-color-3: hsl(215, 85%, 65%); /* bright blue */
+	--name-color-4: hsl(45, 95%, 65%); /* warm yellow */
+	--name-color-5: hsl(320, 75%, 70%); /* pinkish */
+	--name-color-6: hsl(30, 40%, 55%); /* warm brown */
 }
 
 @media (prefers-color-scheme: light) {
@@ -13,10 +20,41 @@
 		--accent: hsl(0, 0%, 70%);
 		--accent-focus: hsl(0, 0%, 60%);
 		--accent-span: hsl(176, 100%, 25%);
+
+		--name-color-1: hsl(5, 75%, 45%);
+		--name-color-2: hsl(134, 50%, 40%);
+		--name-color-3: hsl(215, 75%, 45%);
+		--name-color-4: hsl(45, 85%, 45%);
+		--name-color-5: hsl(320, 65%, 50%);
+		--name-color-6: hsl(30, 35%, 40%);
 	}
 }
 
 html {
 	background-color: var(--background);
 	color: var(--foreground);
+}
+
+.nameColor1 {
+	color: var(--name-color-1);
+}
+
+.nameColor2 {
+	color: var(--name-color-2);
+}
+
+.nameColor3 {
+	color: var(--name-color-3);
+}
+
+.nameColor4 {
+	color: var(--name-color-4);
+}
+
+.nameColor5 {
+	color: var(--name-color-5);
+}
+
+.nameColor6 {
+	color: var(--name-color-6);
 }
