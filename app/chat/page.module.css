@@ -128,3 +128,10 @@ body {
 	text-align: right;
     align-self: flex-end;
 }
+
+.sysWrapper {
+	align-self: center;
+	width: 100%;
+	text-align: center;
+	background-color: var(--background);
+}

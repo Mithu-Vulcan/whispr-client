@@ -42,6 +42,7 @@ export default function Home() {
 	}
 
 	function handleJoin () {
+		router.push(`/chat?name=${name}&code=${code}`)
 		console.log("join")
 	}
 

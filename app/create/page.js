@@ -13,31 +13,35 @@ const poppins = Poppins({
 
 export default function Home() {
 	const router = useRouter();
-	const [code, setCode] = useState("");
 	const [name, setName] = useState("");
+	const [code, setCode] = useState("");
 
 	function handleBtn(endPoint) {
-		if (endPoint == "/") {
-			router.push("/");
-		} else {
-			if (!code || !name) {
-				alert("Empty input Fields Check the name and code");
-			} else {
-				if (code.length == 6) {
-					console.log(`Joining: ${name} ${code}`);
-					router.push(`${endPoint}?code=${code}`);
-				} else {
-					alert("Invalid Code");
-				}
-			}
-		}
+		router.push(endPoint);
 	}
 
 	function handleCreate() {
-		if (!code || !name) {
-			alert("Empty input Fields Check the name and code");
+		if (!name) {
+			alert("Empty input Fields Check the name");
 		} else {
-			console.log(`Creating: ${name} ${code}`);
+			requestCode();
+		}
+	}
+
+	async function requestCode() {
+		try {
+			const res = await fetch("http://192.168.1.5:5000/api/rooms/create", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			const data = await res.json();
+			setCode(data.roomCode)
+			handleBtn(`/chat?name=${name}&code=${data.roomCode}`)
+		} catch (err) {
+			console.log("Error occured while fetch: ", err);
 		}
 	}
 
@@ -65,17 +69,6 @@ export default function Home() {
 						id='name'
 						value={name}
 						onChange={(e) => setName(e.target.value)}
-					/>
-				</div>
-				<div className={`${styles.inputSection}`}>
-					<p className={styles.input}>Code: </p>
-					<input
-						type='text'
-						className={`${styles.inputBox}  ${styles.code}`}
-						id='code'
-						value={code}
-						autoComplete='off'
-						onChange={(e) => setCode(e.target.value.toUpperCase())}
 					/>
 				</div>
 				<div className={styles.btnSection}>

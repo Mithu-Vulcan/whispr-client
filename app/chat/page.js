@@ -5,6 +5,9 @@ import styles from "./page.module.css";
 import { Poppins } from "next/font/google";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { io } from "socket.io-client";
+
+let socket;
 
 const poppins = Poppins({
 	variable: "--font-poppins",
@@ -18,6 +21,8 @@ export default function Chat() {
 	const [showDialog, setShowDialog] = useState(false);
 	const [code, setCode] = useState("");
 	const [name, setName] = useState("");
+	const [messages, setMessages] = useState([]);
+	const [currentMessage, setCurrentMessage] = useState("");
 
 	useEffect(() => {
 		const queryName = searchParams.get("name");
@@ -28,8 +33,86 @@ export default function Chat() {
 		} else {
 			setName(queryName);
 			setCode(querycode);
+
+			socket = io("http://localhost:5000");
+			socket.emit("join-room", code, name);
+			socket.on("chat message", (msg) => {
+				console.log(msg);
+				setMessages((prev) => [...prev, msg]);
+			});
+			return () => {
+				socket.emit("leave-room", { code, name });
+				socket.disconnect();
+			};
 		}
-	}, [searchParams, router]);
+	}, [searchParams, router, code, name]);
+
+	function copyJoinLink(code) {
+		const joinURL = `${window.location.origin}/join?code=${encodeURIComponent(
+			code
+		)}`;
+
+		// Try modern clipboard API first
+		if (
+			navigator.clipboard &&
+			typeof navigator.clipboard.writeText === "function"
+		) {
+			navigator.clipboard
+				.writeText(joinURL)
+				.then(() => {
+					showCopiedToast(); // Optional toast
+				})
+				.catch((err) => {
+					console.warn("Clipboard API failed:", err);
+					fallbackCopy(joinURL);
+				});
+		} else {
+			// Fallback for older/locked-down browsers
+			fallbackCopy(joinURL);
+		}
+	}
+	function fallbackCopy(text) {
+		const textarea = document.createElement("textarea");
+		textarea.value = text;
+		textarea.setAttribute("readonly", "");
+		textarea.style.position = "absolute";
+		textarea.style.left = "-9999px";
+		document.body.appendChild(textarea);
+		textarea.select();
+
+		try {
+			const success = document.execCommand("copy");
+			if (success) {
+				showCopiedToast(); // Optional toast
+			} else {
+				alert("Copy failed.");
+			}
+		} catch (err) {
+			console.error("Fallback failed:", err);
+			alert("Copy not supported on this device.");
+		}
+
+		document.body.removeChild(textarea);
+	}
+
+	function showCopiedToast() {
+		alert("✅ Link copied!");
+	}
+
+	function handleSendMessage() {
+		console.log("message: ", currentMessage);
+		const message = currentMessage.trim();
+		const roomId = code;
+		const username = name;
+		if (message !== "") {
+			socket.emit("chat message", {
+				roomId,
+				username,
+				message,
+			});
+			setCurrentMessage("");
+		}
+	}
 
 	return (
 		<section id='chat' className={styles.section}>
@@ -47,13 +130,13 @@ export default function Chat() {
 					<div className={styles.btns}>
 						<button
 							className={`${styles.btn} ${styles.dialogBtn}`}
-							onClick={() => setShowDialog(true)}
+							onClick={() => router.push("/")}
 						>
 							Exit
 						</button>
 						<button
 							className={`${styles.btn} ${styles.dialogBtn}`}
-							onClick={() => setShowDialog(true)}
+							onClick={() => copyJoinLink(code)}
 						>
 							Copy Link
 						</button>
@@ -62,90 +145,32 @@ export default function Chat() {
 			</div>
 
 			<div className={styles.messages}>
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Hey there 👋</p>
-				</div>
-
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Welcome to Whispr</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Hey there 👋</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Welcome to Whispr</p>
-				</div>
-
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Hey there 👋</p>
-				</div>
-
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Welcome to Whispr</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Hey there 👋</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Welcome to Whispr</p>
-				</div>
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Hey there 👋</p>
-				</div>
-
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Welcome to Whispr</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Hey there 👋</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Welcome to Whispr</p>
-				</div>
-
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Hey there 👋</p>
-				</div>
-
-				<div className={styles.messageWrapper}>
-					<p className={styles.name}>Alice</p>
-					<p className={styles.message}>Welcome to Whispr</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Hey there 👋</p>
-				</div>
-
-				<div className={`${styles.messageWrapper} ${styles.ownWrapper}`}>
-					<p className={styles.name}>You</p>
-					<p className={`${styles.message} ${styles.own}`}>Welcome to Whispr</p>
-				</div>
+				{messages.map((data, index) => (
+					<div
+						key={index}
+						className={`${styles.messageWrapper} ${
+							data.username === name ? styles.ownWrapper : ""
+						} ${data.username === "System" ? styles.sysWrapper : ""}`}
+					>
+						<p className={styles.name}>
+							{data.username === name ? "You" : data.username}
+						</p>
+						<p className={styles.message}>{data.message}</p>
+					</div>
+				))}
 			</div>
 
 			<div className={styles.messageBody}>
 				<div className={styles.inputField}>
-					<textarea name='message' id='msg' className={styles.input}></textarea>
-					<button className={styles.send}>&gt;</button>
+					<textarea
+						name='message'
+						id='msg'
+						className={styles.input}
+						onChange={(e) => setCurrentMessage(e.target.value)}
+					></textarea>
+					<button className={styles.send} onClick={handleSendMessage}>
+						&gt;
+					</button>
 				</div>
 			</div>
 		</section>
