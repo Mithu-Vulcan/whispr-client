@@ -30,7 +30,7 @@ export default function Home() {
 
 	async function requestCode() {
 		try {
-			const res = await fetch("http://192.168.1.5:5000/api/rooms/create", {
+			const res = await fetch("https://whispr-express.onrender.com/api/rooms/create", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

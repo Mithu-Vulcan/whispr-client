@@ -34,7 +34,7 @@ export default function Chat() {
 			setName(queryName);
 			setCode(querycode);
 
-			socket = io("http://localhost:5000");
+			socket = io("https://whispr-express.onrender.com/");
 			socket.emit("join-room", code, name);
 			socket.on("chat message", (msg) => {
 				console.log(msg);
@@ -111,6 +111,8 @@ export default function Chat() {
 				message,
 			});
 			setCurrentMessage("");
+			document.getElementById("msg").innerText = ""
+			document.getElementById("msg").innerHTML = ""
 		}
 	}
 
