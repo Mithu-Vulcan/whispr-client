@@ -1,7 +1,7 @@
 "use client";
 
 import FloatingDialog from "../components/FloatingDialog";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import styles from "./page.module.css";
 import { Poppins } from "next/font/google";
 import { useSearchParams } from "next/navigation";
@@ -16,7 +16,8 @@ const poppins = Poppins({
 	weight: ["400", "500", "600"],
 });
 
-export default function Chat() {
+// Create a separate component for the chat functionality
+function ChatContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [showDialog, setShowDialog] = useState(false);
@@ -73,6 +74,7 @@ export default function Chat() {
 			fallbackCopy(joinURL);
 		}
 	}
+
 	function fallbackCopy(text) {
 		const textarea = document.createElement("textarea");
 		textarea.value = text;
@@ -178,5 +180,28 @@ export default function Chat() {
 				</div>
 			</div>
 		</section>
+	);
+}
+
+// Loading component to show while suspending
+function ChatLoading() {
+	return (
+		<div className={styles.section}>
+			<div className={styles.header}>
+				<p className={`${poppins.className} ${styles.logo}`}>Whispr</p>
+			</div>
+			<div className={styles.messages}>
+				<p>Loading chat...</p>
+			</div>
+		</div>
+	);
+}
+
+// Main component wrapped with Suspense
+export default function Chat() {
+	return (
+		<Suspense fallback={<ChatLoading />}>
+			<ChatContent />
+		</Suspense>
 	);
 }
