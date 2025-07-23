@@ -58,3 +58,7 @@ html {
 .nameColor6 {
 	color: var(--name-color-6);
 }
+
+body {
+	margin: 0;
+}
