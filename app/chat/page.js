@@ -1,4 +1,5 @@
 "use client";
+
 import FloatingDialog from "../components/FloatingDialog";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
@@ -45,7 +46,8 @@ export default function Chat() {
 				socket.disconnect();
 			};
 		}
-	}, [searchParams, router, code, name]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	function copyJoinLink(code) {
 		const joinURL = `${window.location.origin}/join?code=${encodeURIComponent(
@@ -111,8 +113,8 @@ export default function Chat() {
 				message,
 			});
 			setCurrentMessage("");
-			document.getElementById("msg").innerText = ""
-			document.getElementById("msg").innerHTML = ""
+			document.getElementById("msg").innerText = "";
+			document.getElementById("msg").innerHTML = "";
 		}
 	}
 
