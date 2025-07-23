@@ -3,8 +3,7 @@
 import styles from "./page.module.css";
 import { Poppins } from "next/font/google";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
@@ -13,7 +12,8 @@ const poppins = Poppins({
 	weight: ["400", "500", "600"],
 });
 
-export default function Home() {
+// Create a separate component for the home functionality
+function HomeContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [code, setCode] = useState("");
@@ -26,7 +26,7 @@ export default function Home() {
 
 	function handleBtn(endPoint) {
 		if (endPoint == "/") {
-			router.push("/")
+			router.push("/");
 		} else {
 			if (!code || !name) {
 				alert("Empty input Fields Check the name and code");
@@ -41,9 +41,9 @@ export default function Home() {
 		}
 	}
 
-	function handleJoin () {
-		router.push(`/chat?name=${name}&code=${code}`)
-		console.log("join")
+	function handleJoin() {
+		router.push(`/chat?name=${name}&code=${code}`);
+		console.log("join");
 	}
 
 	return (
@@ -93,5 +93,31 @@ export default function Home() {
 				</div>
 			</div>
 		</section>
+	);
+}
+
+// Loading component to show while suspending
+function HomeLoading() {
+	return (
+		<section className={styles.home} id='home'>
+			<div className={styles.header}>
+				<p className={`${poppins.className} ${styles.logo}`}>Whispr</p>
+			</div>
+			<div className={styles.hero} id='hero'>
+				<p className={styles.textMain}>
+					Join the Room, Share the code, Whispr!
+				</p>
+				<p className={styles.textSub}>Loading...</p>
+			</div>
+		</section>
+	);
+}
+
+// Main component wrapped with Suspense
+export default function Home() {
+	return (
+		<Suspense fallback={<HomeLoading />}>
+			<HomeContent />
+		</Suspense>
 	);
 }
