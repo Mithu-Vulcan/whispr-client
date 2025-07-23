@@ -37,13 +37,13 @@ function ChatContent() {
 			setCode(querycode);
 
 			socket = io("https://whispr-express.onrender.com/");
-			socket.emit("join-room", code, name);
+			socket.emit("join-room", querycode, queryName);
 			socket.on("chat message", (msg) => {
 				console.log(msg);
 				setMessages((prev) => [...prev, msg]);
 			});
 			return () => {
-				socket.emit("leave-room", { code, name });
+				socket.emit("leave-room", { code: querycode, name: queryName });
 				socket.disconnect();
 			};
 		}
